@@ -2,138 +2,113 @@ import { TABLE_WIDTH, TABLE_HEIGHT } from '../utils/constants.js';
 
 const W = TABLE_WIDTH;
 const H = TABLE_HEIGHT;
-
-// Wall thickness
-const T = 12;
-
-// Plunger lane width
-const PLUNGER_LANE = 30;
+const T = 10; // Wall thickness
 
 export const TABLE = {
   width: W,
   height: H,
   wallThickness: T,
-  plungerLaneWidth: PLUNGER_LANE,
 
-  // Outer walls
+  // Outer walls — full box around the playing field
   walls: [
     // Top wall
     { x: W / 2, y: T / 2, w: W, h: T, label: 'wall_top' },
     // Left wall
     { x: T / 2, y: H / 2, w: T, h: H, label: 'wall_left' },
-    // Right wall (above plunger lane)
-    { x: W - T / 2, y: H / 2 - 80, w: T, h: H - 160, label: 'wall_right' },
-    // Plunger lane right wall
-    { x: W - PLUNGER_LANE + T / 2, y: H / 2, w: T, h: H, label: 'wall_plunger_left' },
-    // Plunger lane bottom
-    // Far right wall for plunger
-    { x: W - T / 2, y: H / 2, w: T, h: H, label: 'wall_plunger_right' },
+    // Right wall
+    { x: W - T / 2, y: H / 2, w: T, h: H, label: 'wall_right' },
+    // Bottom wall (catches the ball below drain)
+    { x: W / 2, y: H - T / 2, w: W, h: T, label: 'wall_bottom' },
   ],
 
-  // Drain walls (angled guides toward drain)
+  // Drain guides (angled walls funneling to drain)
   drainGuides: [
     // Left guide
-    { x1: T, y1: H - 140, x2: 90, y2: H - 75, label: 'guide_left' },
+    { x1: T, y1: H - 180, x2: 80, y2: H - 95, label: 'guide_left' },
     // Right guide
-    { x1: W - PLUNGER_LANE - T, y1: H - 140, x2: W - PLUNGER_LANE - 90, y2: H - 75, label: 'guide_right' },
+    { x1: W - T, y1: H - 180, x2: W - 80, y2: H - 95, label: 'guide_right' },
   ],
 
-  // Flipper positions
+  // Flipper positions (pivot points)
   flippers: {
-    left: { x: 130, y: H - 85, side: 'left' },
-    right: { x: W - PLUNGER_LANE - 130, y: H - 85, side: 'right' },
+    left: { x: 125, y: H - 80, side: 'left' },
+    right: { x: W - 125, y: H - 80, side: 'right' },
   },
 
-  // Drain sensor
-  drain: { x: W / 2 - PLUNGER_LANE / 2, y: H - 10, w: W - PLUNGER_LANE - T * 2, h: 10 },
+  // Drain sensor (between flippers, at bottom)
+  drain: { x: W / 2, y: H - 30, w: 120, h: 10 },
 
-  // Plunger
-  plunger: { x: W - PLUNGER_LANE / 2, y: H - 40 },
+  // Ball launch position (above right flipper area)
+  ballLaunch: { x: W - 50, y: H - 130 },
 
-  // Ball launch position
-  ballLaunch: { x: W - PLUNGER_LANE / 2, y: H - 70 },
-
-  // Bumpers
+  // Bumpers (central area)
   bumpers: [
-    { x: 140, y: 220, label: 'bumper_0' },
-    { x: 220, y: 190, label: 'bumper_1' },
-    { x: 190, y: 280, label: 'bumper_2' },
-    { x: 260, y: 250, label: 'bumper_3' },
-    { x: 150, y: 350, label: 'bumper_4' },
-    { x: 240, y: 340, label: 'bumper_5' },
+    { x: 130, y: 230, label: 'bumper_0' },
+    { x: 210, y: 200, label: 'bumper_1' },
+    { x: 280, y: 240, label: 'bumper_2' },
+    { x: 160, y: 310, label: 'bumper_3' },
+    { x: 240, y: 300, label: 'bumper_4' },
+    { x: 200, y: 380, label: 'bumper_5' },
   ],
 
   // Boss targets (top area)
   bossTargets: [
-    { x: 100, y: 80, w: 30, h: 15, label: 'boss_target_0' },
-    { x: 185, y: 60, w: 30, h: 15, label: 'boss_target_1' },
-    { x: 270, y: 80, w: 30, h: 15, label: 'boss_target_2' },
+    { x: 100, y: 80, w: 35, h: 18, label: 'boss_target_0' },
+    { x: 200, y: 60, w: 35, h: 18, label: 'boss_target_1' },
+    { x: 300, y: 80, w: 35, h: 18, label: 'boss_target_2' },
   ],
 
-  // Ramps (simplified as sensor zones that give points)
+  // Ramps (sensor zones on sides)
   ramps: {
-    left: { x: 40, y: 300, w: 30, h: 200, label: 'ramp_left' },
-    right: { x: W - PLUNGER_LANE - 40, y: 300, w: 30, h: 200, label: 'ramp_right' },
+    left: { x: 30, y: 300, w: 25, h: 180, label: 'ramp_left' },
+    right: { x: W - 30, y: 300, w: 25, h: 180, label: 'ramp_right' },
   },
 
-  // COMBO lanes (5 lanes near bottom)
+  // COMBO lanes (above flippers)
   comboLanes: [
-    { x: 80, y: H - 175, w: 18, h: 30, letter: 'C', label: 'combo_0' },
-    { x: 120, y: H - 175, w: 18, h: 30, letter: 'O', label: 'combo_1' },
-    { x: 160, y: H - 175, w: 18, h: 30, letter: 'M', label: 'combo_2' },
-    { x: 200, y: H - 175, w: 18, h: 30, letter: 'B', label: 'combo_3' },
-    { x: 240, y: H - 175, w: 18, h: 30, letter: 'O', label: 'combo_4' },
+    { x: 100, y: H - 190, w: 20, h: 28, letter: 'C', label: 'combo_0' },
+    { x: 150, y: H - 190, w: 20, h: 28, letter: 'O', label: 'combo_1' },
+    { x: 200, y: H - 190, w: 20, h: 28, letter: 'M', label: 'combo_2' },
+    { x: 250, y: H - 190, w: 20, h: 28, letter: 'B', label: 'combo_3' },
+    { x: 300, y: H - 190, w: 20, h: 28, letter: 'O', label: 'combo_4' },
   ],
 
-  // Slingshots
+  // Slingshots (triangular bumpers above flippers)
   slingshots: {
     left: {
       vertices: [
-        { x: 75, y: H - 170 },
-        { x: 75, y: H - 110 },
-        { x: 105, y: H - 110 },
+        { x: 70, y: H - 170 },
+        { x: 70, y: H - 105 },
+        { x: 105, y: H - 105 },
       ],
       label: 'slingshot_left',
     },
     right: {
       vertices: [
-        { x: W - PLUNGER_LANE - 75, y: H - 170 },
-        { x: W - PLUNGER_LANE - 75, y: H - 110 },
-        { x: W - PLUNGER_LANE - 105, y: H - 110 },
+        { x: W - 70, y: H - 170 },
+        { x: W - 70, y: H - 105 },
+        { x: W - 105, y: H - 105 },
       ],
       label: 'slingshot_right',
     },
   },
 
-  // Spinner (between bumper area and top)
-  spinner: { x: 185, y: 140, w: 40, h: 6, label: 'spinner' },
+  // Spinner
+  spinner: { x: 200, y: 140, w: 40, h: 8, label: 'spinner' },
 
-  // Outlane sensors (sides at bottom)
+  // Outlane sensors
   outlanes: {
-    left: { x: 25, y: H - 105, w: 20, h: 40, label: 'outlane_left' },
-    right: { x: W - PLUNGER_LANE - 25, y: H - 105, w: 20, h: 40, label: 'outlane_right' },
+    left: { x: 30, y: H - 120, w: 20, h: 40, label: 'outlane_left' },
+    right: { x: W - 30, y: H - 120, w: 20, h: 40, label: 'outlane_right' },
   },
 
-  // Kickback positions (same as outlanes)
-  kickbacks: {
-    left: { x: 20, y: H - 105 },
-    right: { x: W - PLUNGER_LANE - 20, y: H - 105 },
-  },
-
-  // Power-up possible spawn positions
+  // Power-up spawn positions
   powerUpSpawns: [
-    { x: 100, y: 400 },
-    { x: 200, y: 380 },
-    { x: 280, y: 400 },
-    { x: 150, y: 300 },
-    { x: 250, y: 300 },
-    { x: 180, y: 450 },
-  ],
-
-  // Curve at top-right to guide ball from plunger lane into play
-  plungerCurve: [
-    { x: W - PLUNGER_LANE, y: 50 },
-    { x: W - PLUNGER_LANE - 10, y: 30 },
-    { x: W - PLUNGER_LANE - 30, y: 18 },
+    { x: 100, y: 420 },
+    { x: 200, y: 400 },
+    { x: 300, y: 420 },
+    { x: 150, y: 320 },
+    { x: 250, y: 320 },
+    { x: 200, y: 480 },
   ],
 };

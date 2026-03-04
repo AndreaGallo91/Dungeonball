@@ -26,8 +26,6 @@ export class TableBuilder {
 
     // Build walls
     this._buildWalls(elements);
-    // Build plunger curve
-    this._buildPlungerCurve(elements);
     // Build drain guides
     this._buildDrainGuides(elements);
     // Build bumpers
@@ -64,38 +62,6 @@ export class TableBuilder {
       elements.walls.push(wall);
       Composite.add(this.world, wall);
     });
-  }
-
-  _buildPlungerCurve(elements) {
-    // Curved wall at top of plunger lane to guide ball left
-    const points = TABLE.plungerCurve;
-    for (let i = 0; i < points.length - 1; i++) {
-      const p1 = points[i];
-      const p2 = points[i + 1];
-      const cx = (p1.x + p2.x) / 2;
-      const cy = (p1.y + p2.y) / 2;
-      const dx = p2.x - p1.x;
-      const dy = p2.y - p1.y;
-      const len = Math.sqrt(dx * dx + dy * dy);
-      const angle = Math.atan2(dy, dx);
-      const wall = Bodies.rectangle(cx, cy, len + 4, 8, {
-        isStatic: true,
-        angle,
-        label: 'plunger_curve',
-        friction: 0.05,
-        restitution: 0.4,
-      });
-      elements.walls.push(wall);
-      Composite.add(this.world, wall);
-    }
-    // Add a final curved piece connecting to top wall area
-    const topCurve = Bodies.circle(TABLE.width - TABLE.plungerLaneWidth - 15, 22, 12, {
-      isStatic: true,
-      label: 'plunger_curve_end',
-      restitution: 0.5,
-    });
-    elements.walls.push(topCurve);
-    Composite.add(this.world, topCurve);
   }
 
   _buildDrainGuides(elements) {

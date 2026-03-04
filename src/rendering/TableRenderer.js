@@ -60,9 +60,6 @@ export function renderTable(ctx, tableElements, gameState) {
   // Drain area
   renderDrain(ctx, gameState.shieldActive);
 
-  // Plunger lane
-  renderPlungerLane(ctx, gameState.plungerCharge);
-
   // Frenzy overlay
   if (isFrenzy) {
     renderFrenzyOverlay(ctx);
@@ -148,7 +145,7 @@ function renderBumpers(ctx, bumpers, isFrenzy, bumperFlash) {
     ctx.font = `${r * 0.9}px serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(isActive ? '\u{1F525}' : '\u{1F48E}', x + 1, y + 1);
+    ctx.fillText(isActive ? '\uD83D\uDD25' : '\uD83D\uDC8E', x + 1, y + 1);
   });
 }
 
@@ -183,7 +180,7 @@ function renderBossTargets(ctx, targets, gameState) {
     ctx.font = '10px serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('\u{1F6E1}', x, y);
+    ctx.fillText('\uD83D\uDEE1', x, y);
   });
 }
 
@@ -286,7 +283,7 @@ function renderOutlanes(ctx, outlanes, kickbackActive) {
       ctx.fillStyle = COLORS.ICE;
       ctx.font = '10px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('\u{1F3F0}', x, y);
+      ctx.fillText('\uD83C\uDFF0', x, y);
     }
   });
 }
@@ -330,40 +327,7 @@ function renderDrain(ctx, shieldActive) {
   ctx.fillStyle = '#666';
   ctx.font = '14px serif';
   ctx.textAlign = 'center';
-  ctx.fillText('\u{1F480}', d.x, d.y + 15);
-}
-
-function renderPlungerLane(ctx, charge) {
-  const pl = TABLE.plunger;
-  const laneX = TABLE_WIDTH - TABLE.plungerLaneWidth;
-
-  // Lane background
-  ctx.fillStyle = 'rgba(22, 33, 62, 0.8)';
-  ctx.fillRect(laneX, 0, TABLE.plungerLaneWidth, TABLE_HEIGHT);
-
-  // Plunger
-  const maxPull = 50;
-  const pullDist = (charge || 0) * maxPull;
-
-  ctx.fillStyle = COLORS.BORDER;
-  ctx.fillRect(pl.x - 8, pl.y + pullDist, 16, 20);
-
-  // Plunger spring
-  ctx.strokeStyle = '#666';
-  ctx.lineWidth = 2;
-  for (let sy = pl.y + pullDist + 20; sy < TABLE_HEIGHT - 10; sy += 8) {
-    ctx.beginPath();
-    ctx.moveTo(pl.x - 6, sy);
-    ctx.lineTo(pl.x + 6, sy + 4);
-    ctx.stroke();
-  }
-
-  // Charge indicator
-  if (charge > 0) {
-    const barH = pullDist;
-    ctx.fillStyle = `hsl(${(1 - charge) * 120}, 100%, 50%)`;
-    ctx.fillRect(pl.x - 12, pl.y + 25, 24, barH);
-  }
+  ctx.fillText('\uD83D\uDC80', d.x, d.y + 15);
 }
 
 function renderFrenzyOverlay(ctx) {

@@ -1,22 +1,22 @@
 export const TABLE_WIDTH = 400;
 export const TABLE_HEIGHT = 720;
 
-export const GRAVITY = { x: 0, y: 0.8 };
+export const GRAVITY = { x: 0, y: 0.6 };
 
 export const BALL_CONFIG = {
   radius: 8,
-  mass: 1,
   restitution: 0.5,
   friction: 0.005,
   frictionAir: 0.0005,
+  density: 0.004,
 };
 
 export const FLIPPER_CONFIG = {
-  length: 70,
+  length: 65,
   width: 12,
-  angularSpeed: 0.28,
-  restAngle: 0.5,
-  activeAngle: -0.6,
+  speed: 0.25,       // radians per frame for smooth interpolation
+  restAngle: 0.5,    // ~28 degrees down
+  activeAngle: -0.5,  // ~28 degrees up
   restitution: 0.9,
 };
 
@@ -26,8 +26,8 @@ export const BUMPER_CONFIG = {
 };
 
 export const PLUNGER_CONFIG = {
-  maxForce: 0.06,
-  chargeRate: 0.0008,
+  minVelocity: 12,
+  maxVelocity: 22,
 };
 
 export const INITIAL_HP = 5;

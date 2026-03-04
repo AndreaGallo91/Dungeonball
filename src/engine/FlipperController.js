@@ -20,7 +20,6 @@ export class FlipperController {
   setDisabled(disabled) {
     this.disabled = disabled;
     if (disabled) {
-      // Force both flippers to rest
       this.flippers.left.active = false;
       this.flippers.right.active = false;
     }
@@ -31,25 +30,32 @@ export class FlipperController {
       const f = this.flippers[side];
       if (!f) return;
 
-      const targetAngle = f.active
-        ? FLIPPER_CONFIG.activeAngle
-        : FLIPPER_CONFIG.restAngle;
       const sign = f.isLeft ? 1 : -1;
-      const target = targetAngle * sign;
+      const rest = FLIPPER_CONFIG.restAngle * sign;
+      const active = FLIPPER_CONFIG.activeAngle * sign;
+      const target = f.active ? active : rest;
+      const current = f.body.angle;
 
-      const currentAngle = f.body.angle;
-      const diff = target - currentAngle;
+      // Faster snap up, slower return down
+      const speed = f.active ? FLIPPER_CONFIG.speed : FLIPPER_CONFIG.speed * 0.6;
+      const diff = target - current;
 
-      if (Math.abs(diff) > 0.02) {
-        const speed = f.active
-          ? FLIPPER_CONFIG.angularSpeed
-          : FLIPPER_CONFIG.angularSpeed * 0.6;
-        const direction = diff > 0 ? 1 : -1;
-        Body.setAngularVelocity(f.body, direction * speed);
+      let newAngle;
+      if (Math.abs(diff) < 0.01) {
+        newAngle = target;
       } else {
-        Body.setAngularVelocity(f.body, 0);
-        Body.setAngle(f.body, target);
+        newAngle = current + diff * speed;
       }
+
+      // Clamp to valid range
+      const minA = Math.min(rest, active);
+      const maxA = Math.max(rest, active);
+      newAngle = Math.max(minA, Math.min(maxA, newAngle));
+
+      // Set both angle and angular velocity for proper energy transfer to ball
+      const angVel = newAngle - current;
+      Body.setAngularVelocity(f.body, angVel);
+      Body.setAngle(f.body, newAngle);
     });
   }
 }

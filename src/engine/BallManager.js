@@ -17,11 +17,10 @@ export class BallManager {
     const r = this.isGiant ? BALL_CONFIG.radius * 2 : BALL_CONFIG.radius;
     const ball = Bodies.circle(x, y, r, {
       label: 'ball',
-      mass: BALL_CONFIG.mass,
       restitution: BALL_CONFIG.restitution,
       friction: BALL_CONFIG.friction,
       frictionAir: BALL_CONFIG.frictionAir,
-      density: 0.004,
+      density: BALL_CONFIG.density,
     });
     Composite.add(this.world, ball);
     this.balls.push(ball);
@@ -35,8 +34,11 @@ export class BallManager {
     const ball = this.createBall(pos.x, pos.y);
     this.mainBall = ball;
 
-    const launchForce = force * PLUNGER_CONFIG.maxForce;
-    Body.applyForce(ball, ball.position, { x: 0, y: -launchForce });
+    // Use setVelocity for reliable launch instead of applyForce
+    const velocity =
+      PLUNGER_CONFIG.minVelocity +
+      force * (PLUNGER_CONFIG.maxVelocity - PLUNGER_CONFIG.minVelocity);
+    Body.setVelocity(ball, { x: -2, y: -velocity });
 
     this.onEvent({ type: 'ballLaunched' });
     return ball;
@@ -51,7 +53,6 @@ export class BallManager {
   }
 
   removeExtras() {
-    // Keep only the main ball
     const toRemove = this.balls.filter((b) => b !== this.mainBall);
     toRemove.forEach((b) => {
       Composite.remove(this.world, b);
