@@ -23,10 +23,10 @@ export const TABLE = {
 
   // Drain guides (angled walls funneling to drain)
   drainGuides: [
-    // Left guide
-    { x1: T, y1: H - 180, x2: 80, y2: H - 95, label: 'guide_left' },
+    // Left guide — starts away from wall to avoid trapping ball
+    { x1: 50, y1: H - 220, x2: 95, y2: H - 95, label: 'guide_left' },
     // Right guide
-    { x1: W - T, y1: H - 180, x2: W - 80, y2: H - 95, label: 'guide_right' },
+    { x1: W - 50, y1: H - 220, x2: W - 95, y2: H - 95, label: 'guide_right' },
   ],
 
   // Flipper positions (pivot points)
@@ -73,21 +73,21 @@ export const TABLE = {
     { x: 300, y: H - 190, w: 20, h: 28, letter: 'O', label: 'combo_4' },
   ],
 
-  // Slingshots (triangular bumpers above flippers)
+  // Slingshots (triangular bumpers — positioned inside drain guides, no wall pockets)
   slingshots: {
     left: {
       vertices: [
-        { x: 70, y: H - 170 },
-        { x: 70, y: H - 105 },
-        { x: 105, y: H - 105 },
+        { x: 95, y: H - 170 },
+        { x: 95, y: H - 110 },
+        { x: 130, y: H - 110 },
       ],
       label: 'slingshot_left',
     },
     right: {
       vertices: [
-        { x: W - 70, y: H - 170 },
-        { x: W - 70, y: H - 105 },
-        { x: W - 105, y: H - 105 },
+        { x: W - 95, y: H - 170 },
+        { x: W - 95, y: H - 110 },
+        { x: W - 130, y: H - 110 },
       ],
       label: 'slingshot_right',
     },
@@ -96,10 +96,10 @@ export const TABLE = {
   // Spinner
   spinner: { x: 200, y: 140, w: 40, h: 8, label: 'spinner' },
 
-  // Outlane sensors
+  // Outlane sensors (between wall and drain guide)
   outlanes: {
-    left: { x: 30, y: H - 120, w: 20, h: 40, label: 'outlane_left' },
-    right: { x: W - 30, y: H - 120, w: 20, h: 40, label: 'outlane_right' },
+    left: { x: 40, y: H - 150, w: 20, h: 40, label: 'outlane_left' },
+    right: { x: W - 40, y: H - 150, w: 20, h: 40, label: 'outlane_right' },
   },
 
   // Power-up spawn positions
