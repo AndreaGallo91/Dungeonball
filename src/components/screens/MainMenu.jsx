@@ -63,7 +63,7 @@ export default function MainMenu({ onStart, onLeaderboard, onHowToPlay }) {
           className="text-purple-300/80 text-sm italic relative"
           style={{ fontFamily: '"Rajdhani", sans-serif' }}
         >
-          Il flipper incontra il dungeon. Ogni combo \u00E8 un incantesimo.
+          {'Il flipper incontra il dungeon. Ogni combo \u00E8 un incantesimo.'}
         </p>
       </div>
 
@@ -114,7 +114,7 @@ export default function MainMenu({ onStart, onLeaderboard, onHowToPlay }) {
       {/* Footer */}
       <div className="absolute bottom-4 text-center">
         <p className="text-gray-600 text-xs" style={{ fontFamily: '"Rajdhani", sans-serif' }}>
-          A/\u2190 \u2192/D = Flipper | SPAZIO = Lancio | \u2191 = Tilt
+          {'A/\u2190 \u2192/D = Flipper | SPAZIO = Lancio | \u2191 = Tilt'}
         </p>
       </div>
     </div>

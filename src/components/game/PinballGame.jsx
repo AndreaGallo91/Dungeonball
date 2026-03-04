@@ -23,7 +23,6 @@ import {
   MAX_TILTS,
   TILT_PENALTY_DURATION,
   COLORS,
-  POINTS,
 } from '../../utils/constants.js';
 import { distance } from '../../utils/mathHelpers.js';
 import GameHUD from './GameHUD.jsx';
@@ -805,63 +804,91 @@ export default function PinballGame({ onGameOver, onPause }) {
     }
   }, [state.phase, state.score, state.level, state.bossesDefeated, onGameOver]);
 
+  // Responsive scaling
+  const containerRef = useRef(null);
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const calcScale = () => {
+      const vh = window.innerHeight;
+      const vw = window.innerWidth;
+      const gameH = TABLE_HEIGHT + 90; // canvas + HUD + controls
+      const gameW = TABLE_WIDTH;
+      const scaleH = (vh - 20) / gameH;
+      const scaleW = (vw - 20) / gameW;
+      setScale(Math.min(scaleH, scaleW, 2.0));
+    };
+    calcScale();
+    window.addEventListener('resize', calcScale);
+    return () => window.removeEventListener('resize', calcScale);
+  }, []);
+
   return (
-    <div className="relative flex flex-col items-center">
-      <GameHUD state={state} />
-      <div className="relative">
-        <canvas
-          ref={canvasRef}
-          width={TABLE_WIDTH}
-          height={TABLE_HEIGHT}
-          className="border-2 border-[#8B7355] rounded-lg shadow-2xl"
-          style={{
-            imageRendering: 'auto',
-            maxHeight: 'calc(100vh - 120px)',
-            width: 'auto',
-          }}
-        />
-        {state.phase === 'waiting' && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-lg">
-            <div className="text-center">
-              <p
-                className="text-amber-400 text-sm mb-2"
-                style={{ fontFamily: '"Press Start 2P", monospace' }}
-              >
-                PREMI SPAZIO
-              </p>
-              <p
-                className="text-gray-400 text-xs"
-                style={{ fontFamily: '"Rajdhani", sans-serif' }}
-              >
-                Tieni premuto per caricare
-              </p>
-            </div>
-          </div>
-        )}
-        {state.isPaused && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/70 rounded-lg">
-            <div className="text-center">
-              <p
-                className="text-amber-400 text-lg mb-2"
-                style={{ fontFamily: '"Cinzel Decorative", serif' }}
-              >
-                PAUSA
-              </p>
-              <p
-                className="text-gray-400 text-xs"
-                style={{ fontFamily: '"Rajdhani", sans-serif' }}
-              >
-                Premi P per continuare
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
+    <div
+      ref={containerRef}
+      className="flex items-center justify-center w-full h-screen"
+      style={{ background: '#0F0F1A' }}
+    >
       <div
-        className="mt-2 text-gray-500 text-xs text-center"
-        style={{ fontFamily: '"Rajdhani", sans-serif' }}
+        style={{
+          transform: `scale(${scale})`,
+          transformOrigin: 'center center',
+        }}
       >
-        A/\u2190 Flipper SX | D/\u2192 Flipper DX | SPAZIO Lancio | P Pausa | \u2191 Tilt
+        <div className="flex flex-col items-center">
+          <GameHUD state={state} />
+          <div className="relative">
+            <canvas
+              ref={canvasRef}
+              width={TABLE_WIDTH}
+              height={TABLE_HEIGHT}
+              className="border-2 border-[#8B7355] rounded-lg shadow-2xl"
+              style={{ display: 'block' }}
+            />
+            {state.phase === 'waiting' && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-lg">
+                <div className="text-center">
+                  <p
+                    className="text-amber-400 text-sm mb-2"
+                    style={{ fontFamily: '"Press Start 2P", monospace' }}
+                  >
+                    PREMI SPAZIO
+                  </p>
+                  <p
+                    className="text-gray-400 text-xs"
+                    style={{ fontFamily: '"Rajdhani", sans-serif' }}
+                  >
+                    Tieni premuto per caricare
+                  </p>
+                </div>
+              </div>
+            )}
+            {state.isPaused && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/70 rounded-lg">
+                <div className="text-center">
+                  <p
+                    className="text-amber-400 text-lg mb-2"
+                    style={{ fontFamily: '"Cinzel Decorative", serif' }}
+                  >
+                    PAUSA
+                  </p>
+                  <p
+                    className="text-gray-400 text-xs"
+                    style={{ fontFamily: '"Rajdhani", sans-serif' }}
+                  >
+                    Premi P per continuare
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+          <div
+            className="mt-2 text-gray-500 text-xs text-center"
+            style={{ fontFamily: '"Rajdhani", sans-serif' }}
+          >
+            {'A/\u2190 Flipper SX | D/\u2192 Flipper DX | SPAZIO Lancio | P Pausa | \u2191 Tilt'}
+          </div>
+        </div>
       </div>
     </div>
   );

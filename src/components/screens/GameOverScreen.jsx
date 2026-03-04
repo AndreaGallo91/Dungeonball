@@ -114,7 +114,7 @@ export default function GameOverScreen({ stats, onRestart, onMenu }) {
         </div>
       ) : (
         <p className="text-green-400 text-sm mb-4" style={{ fontFamily: '"Rajdhani", sans-serif' }}>
-          \u2714 Punteggio salvato!
+          {'\u2714'} Punteggio salvato!
         </p>
       )}
 

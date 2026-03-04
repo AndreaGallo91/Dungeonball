@@ -56,7 +56,7 @@ export default function GameHUD({ state }) {
         </span>
         {phase === 'boss_fight' && currentBoss && (
           <span className="text-red-400 text-xs animate-pulse">
-            \u2694 {currentBoss.name}
+            {'\u2694'} {currentBoss.name}
           </span>
         )}
         {phase === 'frenzy' && (
@@ -87,7 +87,7 @@ export default function GameHUD({ state }) {
                 : 'text-green-400'
             }`}
           >
-            \u00D7{multiplier} STREAK!
+            {'\u00D7'}{multiplier} STREAK!
           </span>
         )}
         {activePowerUp && (
